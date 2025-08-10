@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Image Gallery with Filters</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+.filter-buttons {
+  margin-bottom: 20px;
+}
+.filter-buttons button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  background: #444;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.filter-buttons button:hover {
+  background: #666;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+.gallery img {
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.gallery img:hover {
+  transform: scale(1.05);
+}
+.lightbox {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.lightbox img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 10px;
+}
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<h1>Image Gallery</h1>
+<div class="filter-buttons">
+  <button onclick="filterImages('all')">All</button>
+  <button onclick="filterImages('nature')">Nature</button>
+  <button onclick="filterImages('animals')">Animals</button>
+  <button onclick="filterImages('city')">City</button>
+</div>
+
+<div class="gallery" id="gallery">
+  <!-- Nature -->
+  <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400" data-category="nature">
+  <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400" data-category="nature">
+  
+  <!-- Animals -->
+  <img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400" data-category="animals">
+  <img src="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=400" data-category="animals">
+  
+  <!-- City -->
+  <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=400" data-category="city">
+  <img src="https://images.unsplash.com/photo-1467987506553-8f3916508521?w=400" data-category="city">
+</div>
+
+<div class="lightbox" id="lightbox">
+  <span class="close-btn" onclick="closeLightbox()">×</span>
+  <img id="lightbox-img">
+</div>
+
+<script>
+function filterImages(category) {
+  let images = document.querySelectorAll('#gallery img');
+  images.forEach(img => {
+    img.style.display = (category === 'all' || img.dataset.category === category) ? '' : 'none';
+  });
+}
+
+// Lightbox
+let lightbox = document.getElementById('lightbox');
+let lightboxImg = document.getElementById('lightbox-img');
+
+document.querySelectorAll('#gallery img').forEach(img => {
+  img.addEventListener('click', () => {
+    lightbox.style.display = 'flex';
+    lightboxImg.src = img.src;
+  });
+});
+
+function closeLightbox() {
+  lightbox.style.display = 'none';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeLightbox();
+});
+</script>
+
+</body>
+</html>
